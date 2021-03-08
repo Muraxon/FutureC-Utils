@@ -1,0 +1,1 @@
+Ziemlich dummer und stumpfer transpiler für Future-c zu typescript

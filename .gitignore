@@ -1,0 +1,14 @@
+__pycache__/**
+output/**
+node_modules/**
+*.js
+scriptautocompletedefs.xml
+main.d.ts
+*.ts
+*.txt
+*.cpp
+package-lock.json
+build/**
+dist/**
+*.tmp
+*.json
