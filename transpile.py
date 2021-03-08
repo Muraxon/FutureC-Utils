@@ -1,11 +1,11 @@
 import os, json, re, sys
 import utils
 
-STANDARD_TEMPLATE_FILE = "./src/template.tmp"
+STANDARD_TEMPLATE_FILE = "./src/template_file.tmp"
 TEMPLATE_PARAMETER = "-t"
 STANDARD_CONFIG_FILE = "./src/config_transpile.json"
-STANDARD_TSCONFIG_TEMPLATE_FILE = "./src/template_declaration.tmp"
-DECLARATION_TEMPLATE_PARAMETER = "-d"
+STANDARD_TSCONFIG_TEMPLATE_FILE = "./src/template_tsconfig.tmp"
+TSCONFIG_TEMPLATE_PARAMETER = "-ts"
 
 CONFIG_PARAMETER = "-c"
 JUST_DELETE_PARAMETER = "-jd"
@@ -33,10 +33,11 @@ for x in sys.argv:
 	\"files\": [\n\
 		\n\
 	],\n\
-	\"template\": \"\"\n\
+	\"template\": \"\",\n\
+	\"tsconfig\": \"\"\n\
 }")
 			f.close()
-			print("config file initialized")
+			print(STANDARD_CONFIG_FILE + " file initialized")
 		else:
 			print(STANDARD_CONFIG_FILE + " already initialized")
 		if(not os.path.exists(STANDARD_TEMPLATE_FILE)):
@@ -58,7 +59,7 @@ try {\n\
 	print(error)\n\
 }")
 			f.close()
-			print("template file initialized")		
+			print(STANDARD_TEMPLATE_FILE + " file initialized")		
 		else:
 			print(STANDARD_TEMPLATE_FILE + " already initialized")
 
@@ -171,15 +172,15 @@ except:
 
 tsConfigFilename = ""
 try:
-	ind = sys.argv.index(DECLARATION_TEMPLATE_PARAMETER)
-	sys.argv.remove(DECLARATION_TEMPLATE_PARAMETER)
+	ind = sys.argv.index(TSCONFIG_TEMPLATE_PARAMETER)
+	sys.argv.remove(TSCONFIG_TEMPLATE_PARAMETER)
 	if(ind < len(sys.argv)):
 		tsConfigFilename = sys.argv[ind]
 		del sys.argv[ind]
 	else:
-		print("no filename given with parameter "+DECLARATION_TEMPLATE_PARAMETER+". Looking for declaration file in config file...")
+		print("no filename given with parameter "+TSCONFIG_TEMPLATE_PARAMETER+". Looking for tsconfig file in config file...")
 except:
-	print("parameter "+DECLARATION_TEMPLATE_PARAMETER+" not found. Looking for declaration file in config file...")
+	print("parameter "+TSCONFIG_TEMPLATE_PARAMETER+" not found. Looking for tsconfig file in config file...")
 
 jsonFile = ""
 try:
@@ -188,7 +189,7 @@ try:
 	configFile.close()
 except:
 	print("")
-	print("no config_transpile.json file found. Start with \"python transpile.py init\" first to create the base structure")
+	print("no "+templateConfigTranspileFilename+" file found. Start with \"python transpile.py init\" first to create the base structure")
 	print("")
 	sys.exit()
 
@@ -211,16 +212,16 @@ templateFile.close()
 
 if(len(tsConfigFilename) <= 0):
 	try:
-		tsConfigFilename = str(jsonFile["declaration"])
+		tsConfigFilename = str(jsonFile["tsconfig"])
 		tsConfigFilename = tsConfigFilename.strip()
 		if(len(tsConfigFilename) <= 0):
 			tsConfigFilename = STANDARD_TSCONFIG_TEMPLATE_FILE
-			print("config file: \"declaration\" is empty - Proceeding with default declaration file " + tsConfigFilename)
+			print("config file: \"tsconfig\" is empty - Proceeding with default tsconfig file " + tsConfigFilename)
 		else:
-			print("config file: declaration found - Proceeding with file " + tsConfigFilename)
+			print("config file: tsconfig found - Proceeding with file " + tsConfigFilename)
 	except:
 		tsConfigFilename = STANDARD_TSCONFIG_TEMPLATE_FILE
-		print("config file: does not include part \"declaration\": \"<FileName>\" - Proceeding with default declaration file " + tsConfigFilename)
+		print("config file: does not include part \"tsconfig\": \"<FileName>\" - Proceeding with default tsconfig file " + tsConfigFilename)
 
 tsConfigTemplateFile = open(tsConfigFilename, "r", encoding="utf-8")
 tsConfigFileText = tsConfigTemplateFile.read()
@@ -245,6 +246,7 @@ if(len(sys.argv) <= 1):
 	print("Parameter:")
 	print("    "+TEMPLATE_PARAMETER+" <FileName> template file for creating the *.ts files.")
 	print("    "+CONFIG_PARAMETER+" <FileName> config file for replacing arbitrary words or identifier.")
+	print("    "+TSCONFIG_TEMPLATE_PARAMETER+" <FileName> tsconfig file to create the structure from.")
 	print("    "+JUST_DELETE_PARAMETER+" if given, it JUST DELETES ("+JUST_DELETE_PARAMETER+") the output folder and does nothing else.")
 	print("")
 	print("examples:")
@@ -282,7 +284,7 @@ try:
 		f = open(str(x), "r", 4096, "utf-8")
 		filesAlreadyUsed.append(str(x))
 
-		# create base declaration file
+		# create base tsconfig file
 		if(not os.path.exists(basePath + "tsconfig.json")):
 			baseTSConfigFile = utils.createFile(basePath + "tsconfig.json")
 			TSConfigFileTextTmp = tsConfigFileText
