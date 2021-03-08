@@ -33,8 +33,8 @@ for x in sys.argv:
 	\"files\": [\n\
 		\n\
 	],\n\
-	\"template\": \"\",\n\
-	\"tsconfig\": \"\"\n\
+	\"template\": \".\\\\src\\\\template_file.tmp\",\n\
+	\"tsconfig\": \".\\\\src\\\\template_tsconfig.tmp\"\n\
 }")
 			f.close()
 			print(STANDARD_CONFIG_FILE + " file initialized")
