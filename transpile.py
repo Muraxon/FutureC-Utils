@@ -414,7 +414,10 @@ try:
 
 				
 				includesText = ""
+				tsConfigInclude = "\"" + currentScriptName + "\""
 				if(len(functions) > 0):
+					tsConfigInclude = tsConfigInclude + ",\n\"" + currentFunctionScriptName + "\""
+
 					t = utils.createFile(basePath + currentScriptName.split(".")[0].strip() + "/" + currentFunctionScriptName)
 					t.write(functions)
 					t.close()
@@ -427,7 +430,7 @@ try:
 					baseTSConfigFile = utils.createFile(basePath + currentScriptName.split(".")[0].strip() + "/" + "tsconfig.json")
 					TSConfigFileTextTmp = tsConfigFileText
 					TSConfigFileTextTmp = TSConfigFileTextTmp.replace("<EXTENDS>", ",\t\"extends\":\"./../tsconfig.json\"")
-					TSConfigFileTextTmp = TSConfigFileTextTmp.replace("<FILES>", "")
+					TSConfigFileTextTmp = TSConfigFileTextTmp.replace("<FILES>", tsConfigInclude)
 					baseTSConfigFile.write(TSConfigFileTextTmp)
 					baseTSConfigFile.close()
 
