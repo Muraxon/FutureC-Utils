@@ -180,11 +180,17 @@ try:
 		print("no filename given with parameter "+DECLARATION_TEMPLATE_PARAMETER+". Looking for declaration file in config file...")
 except:
 	print("parameter "+DECLARATION_TEMPLATE_PARAMETER+" not found. Looking for declaration file in config file...")
-	
 
-configFile = open(templateConfigTranspileFilename, "r")
-jsonFile = json.load(configFile)
-configFile.close()
+jsonFile = ""
+try:
+	configFile = open(templateConfigTranspileFilename, "r")
+	jsonFile = json.load(configFile)
+	configFile.close()
+except:
+	print("")
+	print("no config_transpile.json file found. Start with \"python transpile.py init\" first to create the base structure")
+	print("")
+	sys.exit()
 
 if(len(templateFilename) <= 0):
 	try:
