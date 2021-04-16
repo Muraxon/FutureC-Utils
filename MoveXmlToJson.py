@@ -12,6 +12,7 @@ contextP = ""
 contextCString = ""
 contextCMoney = ""
 contextCTable = ""
+contextCDateTime = ""
 
 completeJsonStructure = "{"
 for snippet in root:
@@ -44,6 +45,8 @@ for snippet in root:
                 contextID = 6
             elif(childNodes.text == "S"):
                 contextID = 7
+            elif(childNodes.text == "CDateTime"):
+                contextID = 8
         elif (childNodes.tag != "notes"):
             oneSnippet += "\""+str(childNodes.tag)+"\":\""+str(childNodes.text)+"\""
             j += 1
@@ -100,11 +103,16 @@ for snippet in root:
         if(len(contextS) > 0):
             contextS += ","
         contextS += "\n" + oneSnippet
+    elif(contextID == 8):
+        if(len(contextCDateTime) > 0):
+            contextCDateTime += ","
+        contextCDateTime += "\n" + oneSnippet
 
 
 completeJsonStructure += "\"CString\": {" + contextCString
 completeJsonStructure += "},\"CTable\": {" + contextCTable
 completeJsonStructure += "},\"CMoney\": {" + contextCMoney
+completeJsonStructure += "},\"CDateTime\": {" + contextCDateTime
 completeJsonStructure += "},\"D\": {" + contextD
 completeJsonStructure += "},\"F\": {" + contextF
 completeJsonStructure += "},\"P\": {" + contextP
