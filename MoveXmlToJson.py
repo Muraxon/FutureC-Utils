@@ -13,6 +13,7 @@ contextCString = ""
 contextCMoney = ""
 contextCTable = ""
 contextCDateTime = ""
+contextRest = ""
 
 completeJsonStructure = "{"
 for snippet in root:
@@ -107,6 +108,10 @@ for snippet in root:
         if(len(contextCDateTime) > 0):
             contextCDateTime += ","
         contextCDateTime += "\n" + oneSnippet
+    else:
+        if(len(contextRest) > 0):
+            contextRest += ","
+        contextRest += "\n" + oneSnippet
 
 
 completeJsonStructure += "\"CString\": {" + contextCString
@@ -117,7 +122,8 @@ completeJsonStructure += "},\"D\": {" + contextD
 completeJsonStructure += "},\"F\": {" + contextF
 completeJsonStructure += "},\"P\": {" + contextP
 completeJsonStructure += "},\"H\": {" + contextH
-completeJsonStructure += "},\"S\": {" + contextS + "}"
+completeJsonStructure += "},\"S\": {" + contextS
+completeJsonStructure += "},\"Global\": {" + contextRest + "}"
 completeJsonStructure += "}"
 
 if(os.path.exists("./scriptautocompletetest.json")):
